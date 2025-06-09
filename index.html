@@ -23,9 +23,10 @@
       color: #fff;
       box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
       z-index: 9999;
-      overflow: hidden;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+      user-select: none;
     }
 
     #chat-header {
@@ -33,6 +34,8 @@
       align-items: center;
       background: transparent;
       padding: 10px 15px;
+      border-bottom: 1px solid #ffd70044;
+      user-select: text;
     }
 
     #chat-header img {
@@ -50,23 +53,89 @@
 
     #chat-body {
       padding: 15px;
-      max-height: 300px;
+      max-height: 320px;
       overflow-y: auto;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
     }
 
     .message {
-      margin-bottom: 10px;
-      line-height: 1.4;
+      max-width: 75%;
+      padding: 10px 15px;
+      border-radius: 20px;
       font-size: 14px;
+      line-height: 1.4;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 0.3);
+      word-wrap: break-word;
+      user-select: text;
     }
 
     .bot {
-      text-align: left;
+      background-color: #222;
+      color: #ffd700;
+      align-self: flex-start;
+      border-top-left-radius: 4px;
     }
 
     .user {
-      text-align: right;
+      background-color: #ffd700;
+      color: #000;
+      align-self: flex-end;
+      border-top-right-radius: 4px;
+    }
+
+    #input-area {
+      display: flex;
+      border-top: 1px solid #ffd70044;
+      padding: 10px 15px;
+      background: rgba(0, 0, 0, 0.75);
+    }
+
+    #user-input {
+      flex-grow: 1;
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      background: #222;
       color: #ffd700;
+      user-select: text;
+    }
+
+    #user-input::placeholder {
+      color: #ffd700aa;
+    }
+
+    #send-btn {
+      background: #ffd700;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      margin-left: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+
+    #send-btn:hover {
+      background: #e6c530;
+    }
+
+    #send-btn:active {
+      background: #cca800;
+    }
+
+    #send-btn i {
+      color: #000;
+      font-size: 18px;
     }
 
     .button-options {
@@ -74,18 +143,31 @@
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 10px;
+      justify-content: center;
     }
 
     .option-btn {
-      flex: 1;
-      padding: 8px 10px;
+      flex: 1 1 calc(50% - 10px);
+      padding: 10px 0;
       background-color: #ffd700;
       color: #000;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
       font-weight: bold;
       font-size: 14px;
+      transition: background 0.3s ease, transform 0.15s ease;
+      user-select: none;
+    }
+
+    .option-btn:hover {
+      background-color: #e6c530;
+      transform: scale(1.05);
+    }
+
+    .option-btn:active {
+      background-color: #cca800;
+      transform: scale(0.95);
     }
 
     #contact-links {
@@ -94,17 +176,19 @@
       align-items: center;
       padding: 10px;
       border-top: 1px solid #ffd70044;
+      background: rgba(0, 0, 0, 0.75);
     }
 
     #contact-links a {
       color: #FFD43B;
-      font-size: 22px;
+      font-size: 26px;
       text-decoration: none;
       transition: transform 0.2s;
+      user-select: none;
     }
 
     #contact-links a:hover {
-      transform: scale(1.2);
+      transform: scale(1.3);
     }
 
     @media(max-width: 400px) {
@@ -119,17 +203,17 @@
       }
     }
   </style>
-  <!-- Ícones via CDN -->
+  <!-- FontAwesome Icons CDN -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div id="chatbot">
+  <div id="chatbot" role="region" aria-label="Chatbot André Sagat Muaythai Gym">
     <div id="chat-header">
-      <img src="https://static.wixstatic.com/media/de3173_d5e1e47e91ea4b1e9e7c3d7af9029927~mv2.png" alt="Logo">
+      <img src="https://static.wixstatic.com/media/de3173_d5e1e47e91ea4b1e9e7c3d7af9029927~mv2.png" alt="Logo André Sagat Muaythai Gym" />
       <h4>André Sagat Muaythai Gym</h4>
     </div>
 
-    <div id="chat-body">
+    <div id="chat-body" aria-live="polite" aria-atomic="false">
       <div class="message bot">👋 Olá! Bem-vindo(a) à nossa academia. Como posso te ajudar?</div>
       <div class="button-options" id="options">
         <button class="option-btn" onclick="responder('horarios')">📅 Horários</button>
@@ -139,53 +223,80 @@
       </div>
     </div>
 
-    <div id="contact-links">
-      <!-- <a href="https://t.me/SEU_USUARIO" target="_blank" title="Telegram"><i class="fa-brands fa-telegram"></i></a> -->
-      <a href="https://www.instagram.com/emt.andresagat/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://www.facebook.com/profile.php?id=100071370908506&locale=pt_BR%2F" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+    <form id="input-area" onsubmit="handleSubmit(event)" aria-label="Enviar mensagem">
+      <input type="text" id="user-input" placeholder="Digite sua pergunta aqui..." autocomplete="off" aria-label="Campo para digitar mensagem" />
+      <button type="submit" id="send-btn" aria-label="Enviar">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </form>
+
+    <div id="contact-links" aria-label="Redes sociais">
+      <!-- <a href="https://t.me/SEU_USUARIO" target="_blank" title="Telegram" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a> -->
+      <a href="https://www.instagram.com/emt.andresagat/" target="_blank" title="Instagram" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=100071370908506&locale=pt_BR%2F" target="_blank" title="Facebook" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
     </div>
   </div>
 
   <script>
     const chatBody = document.getElementById('chat-body');
+    const userInput = document.getElementById('user-input');
+    const optionsDiv = document.getElementById('options');
 
-    function responder(tipo) {
-      let resposta = '';
-      let pergunta = '';
-
-      switch(tipo) {
-        case 'horarios':
-          pergunta = '📅 Horários';
-          resposta = 'Temos aulas de segunda a sexta das 19h às 22h e aos sábados das 9h às 12h.';
-          break;
-        case 'planos':
-          pergunta = '💰 Planos';
-          resposta = 'Oferecemos planos mensais, trimestrais e semestrais com preços promocionais.';
-          break;
-        case 'localizacao':
-          pergunta = '📍 Localização';
-          resposta = 'Estamos na Zona Leste de São Paulo. Enviaremos detalhes por WhatsApp ou Telegram.';
-          break;
-        case 'contato':
-          pergunta = '📞 Contato';
-          resposta = 'Entre em contato conosco por uma das redes abaixo.';
-          break;
-        default:
-          resposta = 'Desculpe, não entendi.';
-      }
-
-      if (pergunta) {
-        adicionarMensagem(pergunta, 'user');
-      }
-      adicionarMensagem(resposta, 'bot');
-    }
+    const respostas = {
+      horarios: 'Temos aulas de segunda a sexta das 19h às 22h e aos sábados das 9h às 12h.',
+      planos: 'Oferecemos planos mensais, trimestrais e semestrais com preços promocionais.',
+      localizacao: 'Estamos na Zona Leste de São Paulo. Enviaremos detalhes por WhatsApp ou Telegram.',
+      contato: 'Entre em contato conosco por uma das redes abaixo.',
+    };
 
     function adicionarMensagem(texto, classe) {
       const msg = document.createElement('div');
       msg.classList.add('message', classe);
-      msg.innerText = texto;
+      msg.textContent = texto;
       chatBody.appendChild(msg);
       chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function responder(tipo) {
+      if (!respostas[tipo]) {
+        adicionarMensagem('Desculpe, não entendi.', 'bot');
+        return;
+      }
+
+      adicionarMensagem(`Você: ${tipo === 'contato' ? 'Contato' : tipo.charAt(0).toUpperCase() + tipo.slice(1)}`, 'user');
+
+      // Simula atraso para parecer conversa natural
+      setTimeout(() => {
+        adicionarMensagem(respostas[tipo], 'bot');
+      }, 600);
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      const texto = userInput.value.trim();
+      if (!texto) return;
+
+      // Adiciona mensagem do usuário
+      adicionarMensagem(texto, 'user');
+
+      // Limpa campo de entrada
+      userInput.value = '';
+
+      // Resposta simples automática para perguntas básicas
+      let respostaAutomatica = 'Desculpe, não entendi sua pergunta. Por favor, use os botões abaixo para consultar informações rápidas.';
+
+      // Tentativa simples de correspondência por palavra-chave
+      const textoLower = texto.toLowerCase();
+
+      if (textoLower.includes('horário')) respostaAutomatica = respostas.horarios;
+      else if (textoLower.includes('plano')) respostaAutomatica = respostas.planos;
+      else if (textoLower.includes('localização') || textoLower.includes('onde')) respostaAutomatica = respostas.localizacao;
+      else if (textoLower.includes('contato') || textoLower.includes('falar')) respostaAutomatica = respostas.contato;
+
+      // Simula atraso para resposta do bot
+      setTimeout(() => {
+        adicionarMensagem(respostaAutomatica, 'bot');
+      }, 800);
     }
   </script>
 </body>
