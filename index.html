@@ -17,7 +17,6 @@
       right: 20px;
       width: 340px;
       max-width: 90vw;
-      height: auto;
       background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
       border-radius: 16px;
@@ -92,13 +91,20 @@
     #contact-links {
       display: flex;
       justify-content: space-around;
+      align-items: center;
       padding: 10px;
+      border-top: 1px solid #ffd70044;
     }
 
     #contact-links a {
       color: #ffd700;
-      font-size: 20px;
+      font-size: 22px;
       text-decoration: none;
+      transition: transform 0.2s;
+    }
+
+    #contact-links a:hover {
+      transform: scale(1.2);
     }
 
     @media(max-width: 400px) {
@@ -113,6 +119,8 @@
       }
     }
   </style>
+  <!-- Ícones via CDN -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div id="chatbot">
@@ -132,9 +140,9 @@
     </div>
 
     <div id="contact-links">
-      <!--<a href="https://t.me/SEU_USUARIO" target="_blank" title="Telegram">📨</a>-->
-      <a href="https://www.instagram.com/emt.andresagat/" target="_blank" title="Instagram">📷</a>
-      <a href="https://www.facebook.com/profile.php?id=100071370908506&locale=pt_BR%2F" target="_blank" title="Facebook">📘</a>
+      <!--<a href="https://t.me/SEU_USUARIO" target="_blank" title="Telegram"><i class="fab fa-telegram-plane"></i></a>-->
+      <a href="https://www.instagram.com/emt.andresagat/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=100071370908506&locale=pt_BR%2F" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
     </div>
   </div>
 
@@ -156,11 +164,11 @@
           break;
         case 'localizacao':
           pergunta = '📍 Localização';
-          resposta = 'Estamos localizados na Zona Leste de São Paulo. Quer receber no WhatsApp ou Telegram?';
+          resposta = 'Estamos na Zona Leste de São Paulo. Enviaremos detalhes por WhatsApp ou Telegram.';
           break;
         case 'contato':
           pergunta = '📞 Contato';
-          resposta = 'Você pode falar conosco diretamente pelos ícones abaixo (Telegram, Instagram ou Facebook).';
+          resposta = 'Entre em contato conosco por uma das redes abaixo.';
           break;
         default:
           resposta = 'Desculpe, não entendi.';
