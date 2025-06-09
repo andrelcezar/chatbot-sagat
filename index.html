@@ -3,186 +3,182 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chatbot - André Sagat Muaythai Gym</title>
+  <title>Chatbot Sagat</title>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      background: transparent;
       font-family: Arial, sans-serif;
+      background: transparent;
     }
 
-    #sagat-chatbot-widget {
+    #chatbot {
       position: fixed;
       bottom: 20px;
       right: 20px;
       width: 340px;
       max-width: 90vw;
+      height: auto;
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
-      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 16px;
       color: #fff;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
       z-index: 9999;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
 
-    header {
-      background: transparent;
-      padding: 12px 15px;
+    #chat-header {
       display: flex;
       align-items: center;
-      gap: 10px;
+      background: transparent;
+      padding: 10px 15px;
     }
 
-    header img {
-      width: 38px;
-      height: 38px;
+    #chat-header img {
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      object-fit: cover;
+      margin-right: 10px;
     }
 
-    header h4 {
+    #chat-header h4 {
       margin: 0;
       font-size: 16px;
       color: #ffd700;
     }
 
     #chat-body {
-      padding: 10px 15px;
-      flex-grow: 1;
+      padding: 15px;
+      max-height: 300px;
       overflow-y: auto;
-      max-height: 350px;
-      background: transparent;
     }
 
     .message {
-      margin-bottom: 12px;
-      max-width: 80%;
-      padding: 10px 14px;
-      border-radius: 12px;
+      margin-bottom: 10px;
       line-height: 1.4;
-    }
-
-    .bot {
-      background-color: #333;
-      align-self: flex-start;
-    }
-
-    .user {
-      background-color: #ffd700;
-      color: #000;
-      align-self: flex-end;
-    }
-
-    #chat-input-area {
-      background: transparent;
-      padding: 10px 15px;
-      display: flex;
-      gap: 10px;
-    }
-
-    #chat-input-area input[type="text"] {
-      flex-grow: 1;
-      border-radius: 10px;
-      border: none;
-      padding: 8px 12px;
       font-size: 14px;
     }
 
-    #chat-input-area button {
+    .bot {
+      text-align: left;
+    }
+
+    .user {
+      text-align: right;
+      color: #ffd700;
+    }
+
+    .button-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .option-btn {
+      flex: 1;
+      padding: 8px 10px;
       background-color: #ffd700;
+      color: #000;
       border: none;
-      border-radius: 10px;
-      padding: 8px 15px;
-      font-weight: bold;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
     }
 
     #contact-links {
       display: flex;
       justify-content: space-around;
-      background: transparent;
       padding: 10px;
     }
 
     #contact-links a {
-      text-decoration: none;
       color: #ffd700;
-      font-size: 18px;
+      font-size: 20px;
+      text-decoration: none;
     }
 
     @media(max-width: 400px) {
-      #sagat-chatbot-widget {
+      #chatbot {
         width: 100vw;
-        border-radius: 0;
         bottom: 0;
         right: 0;
+        border-radius: 0;
       }
       #chat-body {
-        max-height: 60vh;
+        max-height: 50vh;
       }
     }
   </style>
 </head>
 <body>
-  <div id="sagat-chatbot-widget">
-    <header>
-      <img src="https://static.wixstatic.com/media/de3173_d5e1e47e91ea4b1e9e7c3d7af9029927~mv2.png" alt="Logo Sagat">
+  <div id="chatbot">
+    <div id="chat-header">
+      <img src="https://static.wixstatic.com/media/de3173_d5e1e47e91ea4b1e9e7c3d7af9029927~mv2.png" alt="Logo">
       <h4>André Sagat Muaythai Gym</h4>
-    </header>
+    </div>
 
-    <div id="chat-body" role="log" aria-live="polite" aria-relevant="additions"></div>
-
-    <div id="chat-input-area">
-      <input type="text" id="chat-input" placeholder="Digite aqui..." />
-      <button id="chat-send-btn">Enviar</button>
+    <div id="chat-body">
+      <div class="message bot">👋 Olá! Bem-vindo(a) à nossa academia. Como posso te ajudar?</div>
+      <div class="button-options" id="options">
+        <button class="option-btn" onclick="responder('horarios')">📅 Horários</button>
+        <button class="option-btn" onclick="responder('planos')">💰 Planos</button>
+        <button class="option-btn" onclick="responder('localizacao')">📍 Localização</button>
+        <button class="option-btn" onclick="responder('contato')">📞 Contato</button>
+      </div>
     </div>
 
     <div id="contact-links">
-      <a href="https://t.me/SEU_USUARIO" target="_blank" title="Telegram">📨</a>
-      <a href="https://www.instagram.com/SEU_INSTAGRAM" target="_blank" title="Instagram">📷</a>
-      <a href="https://www.facebook.com/SEU_FACEBOOK" target="_blank" title="Facebook">📘</a>
+      <!--<a href="https://t.me/SEU_USUARIO" target="_blank" title="Telegram">📨</a>-->
+      <a href="https://www.instagram.com/emt.andresagat/" target="_blank" title="Instagram">📷</a>
+      <a href="https://www.facebook.com/profile.php?id=100071370908506&locale=pt_BR%2F" target="_blank" title="Facebook">📘</a>
     </div>
   </div>
 
   <script>
     const chatBody = document.getElementById('chat-body');
-    const chatInput = document.getElementById('chat-input');
-    const sendBtn = document.getElementById('chat-send-btn');
 
-    function addMessage(text, sender = 'bot') {
-      const msgDiv = document.createElement('div');
-      msgDiv.classList.add('message', sender);
-      msgDiv.textContent = text;
-      chatBody.appendChild(msgDiv);
-      chatBody.scrollTop = chatBody.scrollHeight;
+    function responder(tipo) {
+      let resposta = '';
+      let pergunta = '';
+
+      switch(tipo) {
+        case 'horarios':
+          pergunta = '📅 Horários';
+          resposta = 'Temos aulas de segunda a sexta das 19h às 22h e aos sábados das 9h às 12h.';
+          break;
+        case 'planos':
+          pergunta = '💰 Planos';
+          resposta = 'Oferecemos planos mensais, trimestrais e semestrais com preços promocionais.';
+          break;
+        case 'localizacao':
+          pergunta = '📍 Localização';
+          resposta = 'Estamos localizados na Zona Leste de São Paulo. Quer receber no WhatsApp ou Telegram?';
+          break;
+        case 'contato':
+          pergunta = '📞 Contato';
+          resposta = 'Você pode falar conosco diretamente pelos ícones abaixo (Telegram, Instagram ou Facebook).';
+          break;
+        default:
+          resposta = 'Desculpe, não entendi.';
+      }
+
+      if (pergunta) {
+        adicionarMensagem(pergunta, 'user');
+      }
+      adicionarMensagem(resposta, 'bot');
     }
 
-    addMessage('👊 Bem-vindo(a) à André Sagat Muaythai Gym! Como posso te ajudar?');
-
-    sendBtn.addEventListener('click', () => {
-      const userText = chatInput.value.trim();
-      if (!userText) return;
-      addMessage(userText, 'user');
-      chatInput.value = '';
-
-      if (/horário|aulas/i.test(userText)) {
-        addMessage('As aulas são de segunda a sexta das 19h às 22h e sábado das 9h às 12h.');
-      } else if (/preço|planos/i.test(userText)) {
-        addMessage('Temos planos mensais, trimestrais e semestrais. Quer que um atendente fale com você?');
-      } else if (/local/i.test(userText)) {
-        addMessage('Estamos localizados na Zona Leste de SP. Quer receber a localização pelo Telegram?');
-      } else {
-        addMessage('Desculpe, não entendi. Quer falar com um atendente? Use um dos ícones abaixo. 👇');
-      }
-    });
-
-    chatInput.addEventListener('keypress', e => {
-      if (e.key === 'Enter') sendBtn.click();
-    });
+    function adicionarMensagem(texto, classe) {
+      const msg = document.createElement('div');
+      msg.classList.add('message', classe);
+      msg.innerText = texto;
+      chatBody.appendChild(msg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
   </script>
 </body>
 </html>
